@@ -78,7 +78,33 @@ def get_all_translations(rna_sequence, genetic_code):
         A list of strings; each string is an sequence of amino acids encoded by
         `rna_sequence`.
     """
-    pass
+    rna_sequence = rna_sequence.upper()
+    peptides = []
+
+    for frame in range(3):
+
+        for i in range(frame, len(rna_sequence) - 2, 3):
+
+            codon = rna_sequence[i:i+3]
+
+            if codon == "AUG":
+
+                peptide = ""
+
+                for j in range(i, len(rna_sequence) - 2, 3):
+
+                    current_codon = rna_sequence[j:j+3]
+                    amino_acid = genetic_code[current_codon]
+
+                    if amino_acid == "*":
+                        break
+
+                    peptide += amino_acid
+
+                if peptide not in peptides:
+                    peptides.append(peptide)
+
+    return peptides
 
 def get_reverse(sequence):
     """Reverse orientation of `sequence`.
